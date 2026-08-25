@@ -1,0 +1,63 @@
+# 使用说明: 
+# 1.此文件要和三(单)语小工具放在同一个目录。
+# 2.#代表注释此行，注释后此行规则不生效。规则说明(https://i.imgur.com/nUv5fPV.jpg)
+# version1.8.19
+
+{
+#=================通用规则=================#
+## 刪除多餘代碼 ##
+    '</p><p>':r'</p>\n<p>',
+    '</p>\n{2,}':r'</p>\n',
+    '<p></p>':r'',
+    '<a id=.*?></a>':r'',
+    '</strong>\s<strong>':r' ',
+    '<strong>\s</strong>':r' ',
+## 主标题(根据需要改为h3或h2) ##
+    '<body>\n+<h1>(.*?)</h1><p>':r'<body>\n<h3>\1</h3>\n<p>',
+    '<body>\n+<p><strong>(.*)</strong></p>':r'<body>\n<h3>\1</h3>',
+    '<body>\n+<p>(.*?)</p>':r'<body>\n<h3>\1</h3>',
+## 脚注上标去掉空格 ##
+    '<sup>(\[.\])\s</sup>':r'<sup>\1</sup> ',
+## 转换雙引号 ##
+    '&quot;':r'"',
+## 日期 ##
+    '<p>(.{1,18}\d+)\s*</p>\n</body>':r'<p class="date">\1</p>\n</body>',
+    '<p>(.*\d.*(1|2)\d\d\d)</p>':r'<p class="date">\1</p>',
+## 作者(用完停用此规则) ##
+####'</(h3|h2)>\n<p>(.{0,80}?)</p>':r'</\1>\n<p class="author">\2</p>',
+## 去除不规范的空格
+    '<sup>\s+</sup>':r' ',
+
+#===========乌尔都语==================#
+    '<body>':r'<body dir="rtl">',
+## 脚注 ##
+    '<p>(حاشیہ:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(حاشیہ:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(حاشیہ:)\s*</p>':r'<p class="footnote">\1</p>',
+    '<p>(حاشیہ:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(حاشیہ:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(حاشیہ:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    # 前面带 - 的摘自,如——《话·卷一　神的显现与作工》
+    '<p>((?:–)? کلام، جلد \d۔.*)</p>':r'<p class="from">\1</p>',
+    # 《话·卷*》
+    '<p>(از کلام، جلد \d۔.*)</p>':r'<p class="from">\1</p>',
+    # 带括号摘自（《话·卷*》）
+    '<p>(\(کلام، جلد \d۔.*\)۔)</p>':r'<p class="from">\1</p>',
+    # （《跟随羔羊唱新歌）
+    '<p>(\(میمنے کا پیچھا کرو اور نئے گیت گاﺆ\)۔)</p>':r'<p class="from">\1</p>',
+    # 《跟随羔羊唱新歌·X》
+    '<p>(از میمنے کا پیچھا کرو اور نئے گیت گاﺆ، .*)</p>':r'<p class="from">\1</p>',
+    # ——《跟随羔羊唱新歌·歌名》
+    '<p>(– میمنے کا پیچھا کرو اور نئے گیت گاﺆ، .*)</p>':r'<p class="from">\1</p>',
+## 段落内摘自 ##
+    '(</strong>“\s+)(?<!from-inline">)(\(کلام، جلد[^<>]*?\)+)(۔)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:”|")\s+)(?<!from-inline">)(\([^“]*?\s\d+:\s?\d+(?:-\d+)?(?:،\s\d+(?:-\d+))?\))(۔)':r'\1<span class="from-inline">\2</span>\3',
+## 文中脚注代码加空行 ##
+#    '(<p class="footnote">[^\n]*?</p>)\n(?!<p\sclass="footnote"|<br|</body|<p>1|<p>a)':r'\1\n<br class="epub_blank" />\n',
+## 规范span代码 ##
+    '(<span class="from-inline">\()([^(]*?)\)\)</span>':r'\1\2)</span>)',
+## 连续两个空格加代码 ##
+    '(\d)\s\s':r'\1&#160;&#160;',
+    '(\d)<strong>\s\s':r'\1&#160;&#160;<strong>',
+}

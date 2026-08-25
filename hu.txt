@@ -1,0 +1,75 @@
+# 使用说明: 
+# 1.此文件要和三(单)语小工具放在同一个目录。
+# 2.#代表注释此行，注释后此行规则不生效。规则说明(https://i.imgur.com/nUv5fPV.jpg)
+# version1.8.19
+
+{
+#=================通用规则=================#
+## 刪除多餘代碼 ##
+    '</p><p>':r'</p>\n<p>',
+    '</p>\n{2,}':r'</p>\n',
+    '<p></p>':r'',
+    '<a id=.*?></a>':r'',
+    '</strong>\s<strong>':r' ',
+    '<strong>\s</strong>':r' ',
+## 主标题(根据需要改为h3或h2) ##
+    '<body>\n+<h1>(.*?)</h1><p>':r'<body>\n<h3>\1</h3>\n<p>',
+    '<body>\n+<p><strong>(.*)</strong></p>':r'<body>\n<h3>\1</h3>',
+    '<body>\n+<p>(.*?)</p>':r'<body>\n<h3>\1</h3>',
+## 脚注上标去掉空格 ##
+    '<sup>(\[.\])\s</sup>':r'<sup>\1</sup> ',
+## 转换雙引号 ##
+    '&quot;':'"',
+## 日期 ##
+    '<p>(.{1,10}\d+)\s*</p>\n</body>':r'<p class="date">\1</p>\n</body>',
+    '<p>(.*\d.*(1|2)\d\d\d)</p>':r'<p class="date">\1</p>',
+## 作者(用完停用此规则) ##
+####'</(h3|h2)>\n<p>(.{0,80}?)</p>':r'</\1>\n<p class="author">\2</p>',
+## 去除不规范的空格
+    '<sup>\s+</sup>':r' ',
+#=================马扎尔语HU=================#
+## 脚注 ##
+    '<p>(Lábjegyzetek\s*:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n<p class="footnote">\4</p>\n<p class="footnote">\5</p>\n<p class="footnote">\6</p>\n<p class="footnote">\7</p>\n<p class="footnote">\8</p>\n</body>',
+    '<p>(Lábjegyzetek\s*:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n<p class="footnote">\4</p>\n<p class="footnote">\5</p>\n<p class="footnote">\6</p>\n<p class="footnote">\7</p>\n</body>',
+    '<p>(Lábjegyzetek\s*:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n<p class="footnote">\4</p>\n<p class="footnote">\5</p>\n<p class="footnote">\6</p>\n</body>',
+    '<p>(Lábjegyzetek\s*:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n<p class="footnote">\4</p>\n<p class="footnote">\5</p>\n</body>',
+    '<p>(Lábjegyzetek\s*:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n<p class="footnote">\4</p>\n</body>',
+    '<p>(Lábjegyzetek\s*:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Lábjegyzet\s*:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Lábjegyzet\s*:)</p>':r'<p class="footnote">\1</p>',
+	'<p>(Lábjegyzet\s*:)</p>\n<p>(.*)</p>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>',
+	'<p>(Lábjegyzetek\s*:)</p>\n<p>(.*)</p>\n<p>(.*)</p>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>',
+## 摘自 ##
+    '<p>(\(Az Ige, \d. kötet\s.*\)</p>)':r'<p class="from">\1',
+    '<p>(Forrás: Az Ige, \d\.)</p>':r'<p class="from">\1</p>',
+    '<p>(Forrás: Az Ige.*?)</p>':r'<p class="from">\1</p>',
+    '<p>(\(Isten közhyjössége\))</p>':r'<p class="from">\1</p>',
+## 日期 ##
+    '<p>(\d\d\d\d\.?.{0,20})</p>':r'<p class="date">\1</p>',
+## 段落内摘自 ##
+    '([”«]\s+)(?<!from-inline">)(\([^<>]{1,20}?\d+[\d:-]*?\)+|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
+    '((?:</strong>)?”\s+)(?<!from-inline">)((?:\(|\[)Az Ige,[^<>]*?(?:\)|\]))(\.)':r'\1<span class="from-inline">\2</span>\3',
+	'(</strong>”\s+)(?<!from-inline">)((?:\(|\[)Az Ige,[^<>]*?(?:\)|\]))(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '(</strong>”\s)(\(Jelenések 2, 3. fejezet\))':r'\1<span class="from-inline">\2</span>',
+	'(</strong>«\s)(\(Jelenések 2, 3. fejezet\))':r'\1<span class="from-inline">\2</span>',
+	'((?:</strong>)?”\s+)(?<!from-inline">)(\((?:La Palabra, Vol|Isten közössége|Kövesd a Bárányt és énekelj új énekeket)[^<>]*?\)\)?)':r'\1<span class="from-inline">\2</span>',
+## 文中脚注代码加空行 ##
+    '(<p class="footnote">[^\n]*?</p>)\n(?!<p\sclass="footnote"|<br|</body|<p>1|<p>a)':r'\1\n<br class="epub_blank" />\n',
+## 卷三选段 ##
+    '<p><strong>(\d\d\..{0,20})</strong></p>':r'<p class="heading-1">\1</p>',
+	'<p><strong>(\d\..{0,20})</strong></p>':r'<p class="heading-1">\1</p>',
+## 每日神話 ##
+     '<p>(?:<strong>)?(Isten napi igéi)\s*(?:</strong>)?\s*(.*?szemelvény)(?:</strong>)?</p>':r'<p class="heading-1">\1&#160;&#160;<span class="excerpt">\2</span></p>',
+	 '<p><strong>(.{1,130}?)</strong>\s*(\(Válogatott szakaszok\))</p>':r'<p class="heading-2">\1<span class="excerpt-small">\2</span></p>',
+	 '<p><strong>(.{1,130}?)</strong>\s*(\(válogatott szakasz\))</p>':r'<p class="heading-2">\1<span class="excerpt-small">\2</span></p>',
+	 '(\d{1,3}:\d{1,3}(-\d{1,3})?)\s\s':r'\1&#160;&#160;',
+## 其它 ##	
+	'<p>(?:<strong>)?(相关神话语：|相關神話語：|Szavak a Bibliából|Kapcsolódó tapasztalati bizonyságtételek|参考讲道交通：|Isten szavai a Bibliából|Kapcsolódi filmrészletek|Kapcsolódó videók|Kapcsolódó prédikációk|Kapcsolódó himnuszok|Az utolsó napok Mindenható Istenének szavai)\s*(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 规范span代码 ##
+    '(<span class="from-inline">\()([^(]*?)\)\)</span>':r'\1\2)</span>)',
+## 修改标签 ##
+    '\.</span>':r'</span>.',
+## 连续两个空格加代码 ##
+    '(\d)\s\s':r'\1&#160;&#160;',
+    '(\d)<strong>\s\s':r'\1&#160;&#160;<strong>',
+}

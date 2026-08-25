@@ -1,0 +1,95 @@
+# 使用说明: 
+# 1.此文件要和三(单)语小工具放在同一个目录。
+# 2.#代表注释此行，注释后此行规则不生效。规则说明(https://i.imgur.com/nUv5fPV.jpg)
+# version1.8.19
+# 2022-03-17 把各语言规则独立出来；
+
+{
+#=================通用规则=================#
+## 刪除多餘代碼 ##
+    '</p><p>':r'</p>\n<p>',
+    '</p>\n{2,}':r'</p>\n',
+    '<p></p>':r'',
+    '<a id=.*?></a>':r'',
+    '</strong>\s<strong>':r' ',
+    '<strong>\s</strong>':r' ',
+## 主标题(根据需要改为h3或h2) ##
+    '<body>\n+<h1>(.*?)</h1><p>':r'<body>\n<h3>\1</h3>\n<p>',
+    '<body>\n+<p><strong>(.*)</strong></p>':r'<body>\n<h3>\1</h3>',
+    '<body>\n+<p>(.*?)</p>':r'<body>\n<h3>\1</h3>',
+## 脚注上标去掉空格 ##
+    '<sup>(\[.\])\s</sup>':r'<sup>\1</sup> ',
+## 转换雙引号 ##
+    '&quot;':r'"',
+## 日期 ##
+    '<p>(.{1,18}\d+)\s*</p>\n</body>':r'<p class="date">\1</p>\n</body>',
+    '<p>(.*\d.*(1|2)\d\d\d)</p>':r'<p class="date">\1</p>',
+## 作者(用完停用此规则) ##
+####'</(h3|h2)>\n<p>(.{0,80}?)</p>':r'</\1>\n<p class="author">\2</p>',
+## 去除不规范的空格
+    '<sup>\s+</sup>':r' ',
+#=================格鲁吉亚语KA==================#
+## 脚注 ##
+    '<p>((?:სქოლიო|შენიშვნები):)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>((?:სქოლიო|შენიშვნები):)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>((?:სქოლიო|შენიშვნები):)</p>':r'<p class="footnote">\1</p>',
+## 单独一行摘自 ##
+    '<p>(\(სიტყვა, ტ\..*\))</p>':r'<p class="from">\1</p>',
+    '<p>(– სიტყვა, ტ\..*)</p>':r'<p class="from">\1</p>',
+## 段落内摘自 ##
+    '((?:</strong>)?“?\s)([\(\[]„?სიტყვა, ტ\.[^<>]{13,}?[\)\]]+)':r'\1<span class="from-inline">\2</span>',
+    # 这个放后面，不然会导致带括号的加粗
+    '([“‘]\s?(?:</strong>)?\s*)(?<!from-inline">)(\((?!Teil)[^<>]{1,20}?\d+[\d:-]*?\)|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
+### 圣经中的话 ##
+#    '<p>(?:<strong>)?(Bibelverse\sals\sReferenz:|Worte aus der Bibel)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 圣经中神的话 ##
+#    '<p>(?:<strong>)?(Gottes Worte aus der Bibel)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关诗歌 ##
+#    '<p>(?:<strong>)?(Hymnen zu diesem Thema)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关视频 ##
+#    '<p>(?:<strong>)?(Ähnliche Videos)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关讲章 ##
+#    '<p>(?:<strong>)?(Predigten zu diesem Thema)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关电影片段 ##
+#    '<p>(?:<strong>)?(Filmausschnitte zu diesem Thema)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关经历见证 ##
+#    '<p>(?:<strong>)?(Erfahrungszeugnisse zu diesem Thema)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关神话语 ##
+#    '<p>(?:<strong>)?(Relevante\sWorte\sGottes:|Worte des Allmächtigen Gottes der letzten Tage)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 参考讲道交通 ##
+#    '<p>(?:<strong>)?(Auszüge\saus\sPredigten\sund\sGemeinschaften\sals\sReferenz:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 摘选全篇神话语 ##
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\((Ein\sausgewähltes\sKapitel\saus\sGottes\sWort)\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+### 问题長標題 ##
+#    '<p><strong>(Frage\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+    '<h3>(Antwort:\s*\d:.*)</h3>':r'<h6>\1</h6>',
+### 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(Antwort:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 问题解答(與答案同一段) ##
+#    '<p><strong>(Antwort:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+### 每日神話 ##
+#    '<p>(?:<strong>)?(Das\stägliche\sWort\sGottes)\s*(?:</strong>)?\s*(Auszug.*?)(?:</strong>)?</p>':r'<p class="heading-1">\1 <span class="excerpt">\2</span></p>',
+#    '<p><strong>(.*?\s*)</strong>(\s*\(Ausgewählte Textabschnitte\)|\s*\(Ausgewählter Textabschnitt\))</p>':r'<p class="heading-2">\1<span class="excerpt-small">\2</span></p>',
+### 附篇标题 ##
+    '<h3>(დანართი\s*\d:)\s*</h3>\n<p><strong>\s*(.*?)</strong></p>':r'<h3><span class="text-align-left d-block">\1 </span>\2</h3>',
+## 文中脚注代码加空行 ##
+#    '(<p class="footnote">[^\n]*?</p>)\n(?!<p\sclass="footnote"|<br|</body|<p>1|<p>a)':r'\1\n<br class="epub_blank" />\n',
+## 卷三选段 ##
+#    '<p>(?:<strong>)?(Auszug\s*\d+)(?:</strong>)?</p>':r'<p class="heading-1">\1</p>',
+#    '<p>(?:<strong>)?(Auszug\s*\d+)(?:</strong>)?\s(\(Antworten auf Fragen von Brüdern und Schwestern\))</p>':r'<p class="heading-1">\1 <span class="excerpt-small">\2</span></p>',
+#    '<p>(– Gottes Gemeinschaft)</p>':r'<p class="from">\1&#160;&#160;</p>',
+#    '<h3>(Gemeinschaftlicher Austausch über die Hymne „Aus Liebe“)</h3>\n<p>(\(Gemeinschaftlicher Austausch mit der Hymnengruppe\))</p>':r'<h3>\1<br/><span class="subtitle">\2</span></h3>',
+## 卷六 小肖和小吉的故事 ##
+#    '<p><strong>(Die Geschichten von Xiaoxiao und Xiaoji)</strong></p>':r'<h4 class="sigil_not_in_toc">\1</h4>',
+## 规范span代码 ##
+    '(<span class="from-inline">\()([^(]*?)\)\)</span>':r'\1\2)</span>)',
+## 规范空格代码 ##
+    ' ':r' ',
+## 修改标签 ##
+    '\.</span>':r'</span>.',
+## 连续两个空格加代码 ##
+    '(\d)\s\s':r'\1&#160;&#160;',
+    '(\d)<strong>\s\s':r'\1&#160;&#160;<strong>',
+## 卷一后记 ##
+    '<h3>ბოლოთქმა</h3>':r'<h1>ბოლოთქმა</h1>',
+}

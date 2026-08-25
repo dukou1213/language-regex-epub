@@ -1,0 +1,99 @@
+# 使用说明: 
+# 1.此文件要和三(单)语小工具放在同一个目录。
+# 2.#代表注释此行，注释后此行规则不生效。规则说明(https://i.imgur.com/nUv5fPV.jpg)
+# version1.8.19
+
+{
+#=================通用规则=================#
+## 刪除多餘代碼 ##
+    '</p><p>':r'</p>\n<p>',
+    '</p>\n{2,}':r'</p>\n',
+    '<p></p>':r'',
+    '<a id=.*?></a>':r'',
+    '</strong>\s<strong>':r' ',
+    '<strong>\s</strong>':r' ',
+## 主标题(根据需要改为h3或h2) ##
+    '<body>\n+<h1>(.*?)</h1><p>':r'<body>\n<h3>\1</h3>\n<p>',
+    '<body>\n+<p><strong>(.*)</strong></p>':r'<body>\n<h3>\1</h3>',
+    '<body>\n+<p>(.*?)</p>':r'<body>\n<h3>\1</h3>',
+## 脚注上标去掉空格 ##
+    '<sup>(\[.\])\s</sup>':r'<sup>\1</sup> ',
+## 转换雙引号 ##
+    '&quot;':r'"',
+## 日期 ##
+    '<p>(.{1,18}\d+)\s*</p>\n</body>':r'<p class="date">\1</p>\n</body>',
+    '<p>(.{1,18}\d+)\s*</p>\n<p class="footnote">':r'<p class="date">\1</p>\n<p class="footnote">',
+    '<p>(.*\d.*(1|2)\d\d\d)</p>':r'<p class="date">\1</p>',
+## 作者(用完停用此规则) ##
+####'</(h3|h2)>\n<p>(.{0,80}?)</p>':r'</\1>\n<p class="author">\2</p>',
+## 去除不规范的空格
+    '<sup>\s+</sup>':r' ',
+#=================阿拉伯语AR=================#
+    '<body>':r'<body dir="rtl">',
+## 国度福音推广细则 ## 
+    '<p>(?:<strong>)?(آيات الكتاب المقدس للرجوع إليها:|كلمات الله المتعلقة:|الإجابة:|مقتطفات من عظات ومشاركات للرجوع إليها:|شركة الشخص كمرجع:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+#    '<p>[<strong>]*(آيات الكتاب المقدس للرجوع إليها:)[</strong>]*</p>':r'<p class="heading-3">\1</p>',
+#    '<p>[<strong>]*(مقتطفات من عظات ومشاركات للرجوع إليها:‎)[</strong>]*</p>':r'<p class="heading-3">\1</p>',
+## 单独一行摘自 ##
+    '<p>(مقتبس من "شركة من الأعلى")</p>':r'<p class="from">\1</p>',
+    '<p>(– الكلمة، ج\. \d\..*?)</p>':r'<p class="from">\1</p>',
+    '<p>(– اتبعوا الحمل ورنموا ترنيمات جديدة)</p>':r'<p class="from">\1</p>',
+    '<p>(من "الإجابات على أسئلة السيناريو")</p>': r'<p class="from">\1</p>',
+    '<p>(– أسئلة وأجوبة جوهرية عن إنجيل الملكوت)</p>': r'<p class="from">\1</p>',
+    '<p>(– عظات وشركة عن دخول الحياة)</p>': r'<p class="from">\1</p>',
+    '<p>(– شركة من الأعلى)</p>': r'<p class="from">\1</p>',
+    '<p>(– الشركة من الأعلى)</p>': r'<p class="from">\1</p>',
+    '<p>(– ترتيبات العمل)</p>': r'<p class="from">\1</p>',
+## 脚注 ##
+    '<p>الحواشي:\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">الحواشي:</p>\n<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>الحواشي:\s*</p>\n<p>(.*)</p>':r'<p class="footnote">الحواشي:</p>\n<p class="footnote">\1</p>',
+    '<p>(حاشية:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(حاشية:)</p>':r'<p class="footnote">\1</p>',
+## 段落内摘自 ##
+    '((?:</strong>)?"\s*)(?<!from-inline">)([\[]الكلمة، ج\.\s\d+\.[^<>]*?[\]])':r'\1<span class="from-inline">\2</span>',
+    '((?:</strong>)?"\s*)(?<!from-inline">)([\(]الكلمة، ج\.\s\d+\.[^<>]*?[\)])(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s*)(?<!from-inline">)([\(\[]الكلمة، ج. \d،[^<>]*?[\)\]])(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s*)(?<!from-inline">)([\(]الكلمة، ج\.\s\d+\.[^<>]*?[\)])':r'\1<span class="from-inline">\2</span>',
+    '((?:</strong>)?"\s*)(?<!from-inline">)(\(الكلمة، المجلد \d\.[^<>]*?\))(\)\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s*)(?<!from-inline">)([\(\[]الكلمة يظهر في الجسد، ج. \d،[^<>]*?[\)\]])(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s*)(?<!from-inline">)([\(\[]من "أحاديث مسيح الأيام الأخيرة"[^<>]*?[\)\]])(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s+)(?<!from-inline">)(\(من ".{0,100}?الكلمة يظهر في الجسد"\))(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '("؟?\s+)(?<!from-inline">)(\([^<>]{1,20}?\d+[\d:\s-]*?\)|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
+    '(</strong>[^<>]?"\s+)(?<!from-inline">)(\(رؤيا أصحاح [^<>]*?\)+)':r'\1<span class="from-inline">\2</span>',
+    '((?:</strong>)?"\s+)(?<!from-inline">)(\(من ".{0,100}?أحاديث مسيح الأيام الأخيرة"\))(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '\s(\(170 مبدأ من مبادئ ممارسة الحق\))':r' <span class="from-inline">\1</span>',
+    '\s(\(من "اتبعوا الحمل ورنموا ترنيمات جديدة"\))':r' <span class="from-inline">\1</span>',
+    '\s(\(اتبعوا الحمل ورنموا ترنيمات جديدة\))':r' <span class="from-inline">\1</span>',
+    '((?:</strong>)?"\s+)(?<!from-inline">)(\(.*? \(الجزء الثاني\)".*?\))(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s+)(?<!from-inline">)(\(.{0,270}?كشف أضداد المسيح"\))(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s+)(\(من اتبعوا الحمل ورنموا ترنيمات.*?\))(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s+)(\(.*? في "اتبعوا الحمل ورنموا ترنيمات جديدة"\))(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s+)(\(اتبعوا الحمل ورنموا.*?\))(\.)':r'\1<span class="from-inline">\2</span>\3',
+    '((?:</strong>)?"\s+)(\(من تمهيد "الكلمة يظهر في الجسد"\)|\(من "مشاركات الله" بتصرف\)|\(من خاتمة "الكلمة يظهر في الجسد"\)|\(تعريف القادة الكَذَبة\)|\(من "تعريف القادة الكَذَبة"\))(\.)':r'\1<span class="from-inline">\2</span>\3',
+## 每日神話標題 ##
+    '<p>(?:<strong>)?(كلمات الله اليومية)\s*(?:</strong>)?\s*( اقتباس.*?)(?:</strong>)?</p>':r'<p class="heading-1">\1&#160;&#160;<span class="excerpt">\2</span></p>',
+    '<p><strong>(.*?)\s*</strong>\s*(\(فِقرة مُختارة\))</p>':r'<p class="heading-2">\1 <span class="excerpt-small">\2</span></p>',
+### 附篇标题 ##
+    '<h3>(مُلحق \d:)\s*</h3>\n<p><strong>\s*(.*?)</strong></p>':r'<h3><span class="text-align-right d-block">\1 </span>\2</h3>',
+## 文中脚注代码加空行 ##
+#    '(<p class="footnote">[^\n]*?</p>)\n(?!<p\sclass="footnote"|<br|</body|<p>1|<p>a)':r'\1\n<br class="epub_blank" />\n',
+## 卷三选段 ##
+    '<p>(?:<strong>)?(اقتباس\s*\d+)(?:</strong>)?</p>':r'<p class="heading-1">\1</p>',
+    '<p>(?:<strong>)?(اقتباس\s*\d+)\s*(?:</strong>)?\s*(\(الإجابة على أسئلة الإخوة والأخوات\))</p>':r'<p class="heading-1">\1 <span class="excerpt-small">\2</span></p>',
+    '<h3>(شركة حول أغنية "لأجل المحبة")</h3>\n<p>(\(شركةٌ مع مجموعة إنشاد الترانيم\))</p>':r'<h3>\1<br/><span class="subtitle">\2</span></h3>',
+## 信神必须进入的真理实际 ##
+    '<p>(?:<strong>)?(ترانيم ذات صلة|لمات الله من الكتاب المقدَّس|كلمات الله القدير في الأيام الأخيرة|شهادات اختبارية ذات صلة|مقتطفات من فيلم ذي صلة|كلمات من الكتاب المقدَّس|كلمات الله من الكتاب المقدَّس|فيديوهات ذات صلة|عظات ذات صلة|أفلام ذات صلة)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 卷六 小肖和小吉的故事 ##
+    '<p><strong>(قصتا شياوشياو وشياوجي)</strong></p>':r'<h4 class="sigil_not_in_toc">\1</h4>',
+## 卷六路加福音
+    '(?<!from-inline">)(\(لوقا 14: 26\))':r'<span class="from-inline">\1</span>',
+## 规范span代码 ##
+    '(<span class="from-inline">\()([^(]*?)\)\)</span>':r'\1\2)</span>)',
+## 规范空格代码 ##
+    ' ':r' ',
+## 连续两个空格加代码 ##
+    '(\d)\s\s':r'\1&#160;&#160;',
+    '(\d)<strong>\s\s':r'\1&#160;&#160;<strong>',
+## 卷一后记 ##
+    '<h3>الخاتمة</h3>':r'<h1>الخاتمة</h1>',
+}

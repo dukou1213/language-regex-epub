@@ -1,0 +1,654 @@
+# 使用说明: 
+# 1.此文件要和三(单)语小工具放在同一个目录。
+# 2.#代表注释此行，注释后此行规则不生效。规则说明(https://i.imgur.com/nUv5fPV.jpg)
+# version1.8.19
+# 2020-09-19 添加印尼语替换规则 
+# 2020-09-20 添加单语稿没用a标签
+# 2020-10-01 更新西语摘自规则;修改西语摘自全篇为<p class="heading-4">
+# 2020-10-09 添加俄、英、希伯来、中文规则，通用规则添加转引号的规则
+# 2020-10-23 簡化通用規則; 更新俄英希中尼泊爾規則;添加模板;
+# 2020-10-24 添加斯瓦、祖鲁语规则;更新法语脚注;
+# 2020-10-27 添加印地话和泰语规则;更新模板;
+# 2020-10-29 修正不规范的作者标签;更新模板里每日神话规则;更新印地语摘自;
+# 2020-11-08 更新葡语摘选全篇规则;更新意语摘自和摘选全篇规则;更新模版“摘选全篇”;
+# 2020-11-15 更新通用规则里的日期标签;
+# 2020-12-03 更新每日神话模板; 添加印尼语部分规则; 添加荷兰语部分规则;
+# 2020-12-05 更新问题長標題、摘选全篇神话语模板;
+# 2020-12-16 修改缅甸语摘自规则；补充德语规则;
+# 2020-12-22 补充德语规则;
+# 2021-01-03 更新斯瓦摘自;
+# 2021-01-08 韩语添加特殊符号的转换;
+# 2021-11-14 添加菲语规则；
+# 2021-11-26 添加越南语、希腊语规则；
+# 2021-11-27 更新希腊语规则；
+# 2021-12-29 添加‘去除不规范的空格’规则；
+# 2022-01-13 添加‘去除不规范的空格’规则；
+# 2022-02-07 修改“摘选全篇神话语”规则错误；修改模板“摘选全篇神话语”和“问题長標題”规则；
+# 2022-02-19 修改菲语摘自正则；
+# 2022-02-21 添加波兰语规则；
+{
+#=================通用规则=================#
+## 刪除多餘代碼 ##
+    '</p><p>':r'</p>\n<p>',
+    '</p>\n{2,}':r'</p>\n',
+    '<p></p>':r'',
+    '<a id=.*?></a>':r'',
+    '</strong>\s<strong>':r' ',
+    '<strong>\s</strong>':r' ',
+## 主标题(根据需要改为h3或h2) ##
+    '<body>\n+<h1>(.*?)</h1><p>':r'<body>\n<h3>\1</h3>\n<p>',
+    '<body>\n+<p><strong>(.*)</strong></p>':r'<body>\n<h3>\1</h3>',
+    '<body>\n+<p>(.*?)</p>':r'<body>\n<h3>\1</h3>',
+## 脚注上标去掉空格 ##
+    '<sup>(\[.\])\s</sup>':r'<sup>\1</sup> ',
+## 转换雙引号 ##
+    '&quot;':r'"',
+## 日期 ##
+    '<p>(.{1,18}\d+)\s*</p>\n</body>':r'<p class="date">\1</p>\n</body>',
+    '<p>(.*\d.*(1|2)\d\d\d)</p>':r'<p class="date">\1</p>',
+## 作者(用完停用此规则) ##
+####'</(h3|h2)>\n<p>(.{0,80}?)</p>':r'</\1>\n<p class="author">\2</p>',
+## 去除不规范的空格
+    '<sup>\s+</sup>':r' ',
+#=================缅甸语MY=================#
+## 脚注 ##
+    '<p>(အောက်ခြေမှတ်စုများ-)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(အောက်ခြေမှတ်စုများ-)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(အောက်ခြေမှတ်စုများ-)</p>':r'<p class="footnote">\1</p>',
+    '<p>(အောက်ခြေမှတ်စု\(များ\)-)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(အောက်ခြေမှတ်စု\(များ\)-)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(အောက်ခြေမှတ်စု\(များ\)-)</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(.*မှ)\s*</p>':r'<p class="from">\1</p>',
+    '<p>(.*မှ)</strong></p>':r'<p class="from">\1</p>',
+## 日期 ##
+    '<p>(၁၉၉၂.*)</p>\n</body>':r'<p class="date">\1</p>\n</body>',
+    '<p>(၂ဝဝ၃.*)</p>\n</body>':r'<p class="date">\1</p>\n</body>',
+    '<p>(၂၀၀၃.*)</p>':r'<p class="date">\1</p>',
+## 《听神声音 看见神显现》附加讲道、问题 ##
+    '<p><strong>(မေးခွန်း.*)</strong></p>':r'<h6>\1</h6>',
+    '<p><strong>(အဖြေ-)</strong></p>':r'<p class="heading-3">\1</p>',
+## 参考圣经 ##
+    '<p><strong>(ကိုးကားရန် သမ္မာကျမ်းပိုဒ်များ-)</strong></p>':r'<p class="heading-3">\1</p>',
+    '<p>(ကိုးကားရန် သမ္မာကျမ်းပိုဒ်များ-)</p>':r'<p class="heading-3">\1</p>',
+## 相关神话 ##
+    '<p><strong>(ဆက်စပ်သော ဘုရားသခင်၏ နှုတ်ကပတ်တော်များ-)</strong></p>':r'<p class="heading-3">\1</p>',
+    '<p>(ဆက်စပ်သော ဘုရားသခင်၏ နှုတ်ကပတ်တော်များ-)</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+    '<p>(?:<strong>)?(ကိုးကားရန်အတွက်\sတရားဟောချက်နှင့်\sမိတ်သဟာယပြုခြင်း\sကောက်နုတ်ချက်များ-)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选自全篇 ##
+    '<p>(?:<strong>)?(.*)(?:</strong>)?</p>\n<p>(\(ဘုရားသခင်၏ နှုတ်ကပတ်တော်ထဲမှ လက်ရွေးစင် အခန်း\))</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 圣经 ##
+    '<p>(“.*(<strong>)?.*[၁၂၃၄၅၆၇၈၉၀ဝ]{1,3}:[၁၂၃၄၅၆၇၈၉၀ဝ]{1,3}-?.*</p>)':r'<p class="margin-bottom-1">\1',
+## 每日神話 ##
+    '<p>(?:<strong>)?(ဘုရားသခင်၏\s*နေ့စဉ်\s*နှုတ်ကပတ်တော်များ)\s*(?:</strong>)?(ကောက်နုတ်ချက်.*?)</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+
+#=================西语ES=================#
+## 脚注 ##
+    '<p>(Notas?\s*al?\s*pie:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Notas?\s*al?\s*pie:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Notas?\s*al?\s*pie:)</p>':r'<p class="footnote">\1</p>',
+# 圣经引用
+    '<p>(.*AKJV\.)</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>de “La Palabra manifestada en carne”</p>':r'<p class="from">de “La Palabra manifestada en carne”</p>',
+    '<p>(de\s.*)</p>':r'<p class="from">\1</p>',
+## 摘自全能神的话 ##
+    '(\(Extracto de Las palabras de Dios Todopoderoso\))':r'<p class="heading-4">\1</p>',
+## 西语《听神声音 看见神显现》 ##
+    '<p><strong>(Pregunta\s*\d.*)</strong></p>':r'<h6>\1</h6>',
+## 参考讲道交通 ##
+    '<p>(?:<strong>)?(Fragmentos de sermones y comunicaciones para referencia:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选自全篇 ##
+    '<p>(?:<strong>)?(.*)(?:</strong>)?</p>\n<p>(\(Pasaje selecto de la Palabra de Dios\))</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+    '<p>(?:<strong>)?(.*)(?:</strong>)?</p>\n<p>(\(Un capítulo selecto de la Palabra de Dios\))</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 参考圣经 ##
+    '<p><strong>(Versículos bíblicos como referencia:)</strong></p>':r'<p class="heading-3">\1</p>',
+    '<p><strong>(Las palabras relevantes de Dios:)</strong></p>':r'<p class="heading-3">\1</p>',
+    '<p><strong>(Respuesta:)</strong></p>':r'<p class="heading-3">\1</p>',
+## 170条原则，不用了 ##
+#    '<p>(\((\d)\)\s+.{1,500})</p>':r'<p class="margin-bottom-1">\1</p>',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(Palabras\sdiarias\sde\sDios)\s*(?:</strong>)?(Fragmento.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+
+#=================德语DE==================#
+### 脚注 ##
+    '<p>(Fußnoten?:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Fußnoten?:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Fußnoten?:)</p>':r'<p class="footnote">\1</p>',
+    '<p>(Fußnote\(n\):)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Fußnote\(n\):)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Fußnote\(n\):)</p>':r'<p class="footnote">\1</p>',
+### 摘自 ##
+    '<p>\s*Extracto':r'<p class="from">Extracto',
+    '<p>(aus\s+„.*)</p>':r'<p class="from">\1</p>',
+### 摘自《摘自话在肉身显现》前言、参考人的交通 ##
+    '<p>(aus\sdem\s.*)</p>':r'<p class="from">\1</p>',
+### 参考圣经 ##
+    '<p>(?:<strong>)?(Bibelverse\sals\sReferenz:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关神话语 ##
+    '<p>(?:<strong>)?(Relevante\sWorte\sGottes:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 参考讲道交通 ##
+    '<p>(?:<strong>)?(Auszüge\saus\sPredigten\sund\sGemeinschaften\sals\sReferenz:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 摘选全篇神话语 ##
+    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\((Ein\sausgewähltes\sKapitel\saus\sGottes\sWort)\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+### 问题長標題 ##
+#    '<p><strong>(Frage\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+#    '<h3>(Antwort:\s*\d:.*)</h3>':r'<h6>\1</h6>',
+### 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(Antwort:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 问题解答(與答案同一段) ##
+#    '<p><strong>(Antwort:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+### 每日神話 ##
+#    '<p>(?:<strong>)?(Das\stägliche\sWort\sGottes)\s*(?:</strong>)?\s*(Auszug.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+#=================意语IT==================#
+### 脚注 ##
+    '<p>(Note a piè di pagina:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Note a piè di pagina:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Note a piè di pagina:)</p>':r'<p class="footnote">\1</p>',
+### 摘自 ##
+    '<p>(Tratto\s*da.*)</p>':r'<p class="from">\1</p>',
+    '<p>(dal\s.*“La Parola appare nella carne”)</p>':r'<p class="from">\1</p>',
+    '<p>(da\s“.*)</p>':r'<p class="from">\1</p>',
+### 参考圣经 ##
+#    '<p>(?:<strong>)?(Versetti biblici di riferimento:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+#    '<p>(?:<strong>)?(Riferimento biblico:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关神话语 ##
+#    '<p>(?:<strong>)?(Parole\sdi\sDio\sattinenti:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 参考讲道交通 ##
+#    '<p>(?:<strong>)?(Estratti di sermoni e di condivisioni per la consultazione:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 摘选全篇神话语 ##
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\(Capitolo selezionato della parola di Dio\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+### 问题長標題 ##
+#    '<p><strong>(Domanda\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+#    '<h3>(Domanda\s*\d:.*)</h3>':r'<h6>\1</h6>',
+### 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(Risposta:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 问题解答(與答案同一段)国度福音经典问题 ##
+##    '<p><strong>(答案:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+### 每日神話 ##
+##    '<p>(?:<strong>)?(La Parola quotidiana di Dio)\s*(?:</strong>)?\s*(Estratto.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+    
+
+#=================法语FR=================#
+## 脚注 ##
+    '<p>(Notes?\s+de\s+pied\s+de\s+page\s+:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Notes?\s+de\s+pied\s+de\s+page\s+:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Notes?\s+de\s+pied\s+de\s+page\s+:)</p>':r'<p class="footnote">\1</p>',
+    '<p>(Notes?\s+de\s+bas\s+de\s+page\s+:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Notes?\s+de\s+bas\s+de\s+page\s+:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Notes?\s+de\s+bas\s+de\s+page\s+:)</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(Extrait\s+de\s+«)':r'<p class="from">\1',
+    '<p>(Extrait\s+du)':r'<p class="from">\1',
+## 《听神声音 看见神显现》附加讲道、问题、参考圣经、相关神话等 ##
+#    '<p><strong>(Question\s*\d.*)</strong></p>':r'<h6>\1</h6>',
+#    '<p>(\(Passage sélectionné de la parole de Dieu\))</p>\n<p><strong>(.*)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+#    '<p><strong>(Paroles de Dieu concernées\s*:)</strong></p>':r'<p class="heading-3">\1</p>',
+#    '<p><strong>(Versets bibliques pour référence\s*:)</strong></p>':r'<p class="heading-3">\1</p>',
+#    '<p><strong>(Réponse\s*:)</strong></p>':r'<p class="heading-3">\1</p>',
+
+#=================印地语HI================#
+### 脚注 ##
+    '<p>(फुटनोट:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(फुटनोट:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(फुटनोट\s*:)\s*</p>':r'<p class="footnote">\1</p>',
+### 摘自 ##
+    '<p>(—\s*".* से उद्धृत)</p>':r'<p class="from">\1</p>',
+### 参考圣经 ##
+    '<p>(?:<strong>)?(संदर्भ के लिए बाइबल के पद:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关神话语 ##
+    '<p>(?:<strong>)?(परमेश्वर के प्रासंगिक वचन:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 参考讲道交通 ##
+    '<p>(?:<strong>)?(संदर्भ के लिए धर्मोपदेश और संगति के उद्धरण:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 摘选全篇神话语 ##
+##    '<p>(\(परमेश्वर के वचनों का चुनिंदा अध्याय\))</p>\n<p><strong>(.*?)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+#    '<p>(?:<strong>)?(.*)(?:</strong>)?</p>\n<p>(\(परमेश्वर के वचनों का चुनिंदा अध्याय\))</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+### 问题長標題 ##
+##    '<p><strong>(प्रश्न\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+### 问题解答(另起新行) ##
+##    '<p>(?:<strong>)?(उत्तर:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 问题解答(與答案同一段) ##
+##    '<p><strong>(उत्तर:)(</strong>)?:\s*(</strong>)?\s*':r'<p><strong>\1:</strong> ',
+### 每日神話 ##
+##    '<p>(?:<strong>)?(परमेश्वर के दैनिक वचन)\s*(?:</strong>)?\s*(अंश.*?)</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+
+#=================葡语PT=================#
+### 脚注 ##
+    '<p>(Nota de rodapé:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Nota de rodapé:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Nota de rodapé:)</p>':r'<p class="footnote">\1</p>',
+    '<p>(Notas de rodapé:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Notas de rodapé:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Notas de rodapé:)</p>':r'<p class="footnote">\1</p>',
+### 摘自 ##
+    '<p>(Extraído\sde)':r'<p class="from">\1',
+    '<p>(Extraído\sdo)':r'<p class="from">\1',
+    '<p>de ‘':r'<p class="from">de ‘',
+### 圣经引用 ##
+#    '<p>(\*Nota do tradutor:.*)</p>':r'<p class="footnote">\1</p>',
+### 摘自上面的交通（170条原则） ##
+#    '<p>(Extraído da comunhão do alto)':r'<p class="from">\1',
+### 葡语《国度福音推广细则》附加讲道、问题、参考圣经、相关神话等 ##
+#    '<p><strong>(Pergunta\s*\d.*)</strong></p>':r'<h6>\1</h6>',
+### 摘选全篇神话语 ##
+##    '<p>(\(Um capítulo selecionado da palavra de Deus\))</p>\n<p><strong>(.*)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(\(Um capítulo selecionado da palavra de Deus\))</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+### 参考圣经 ##
+#    '<p>(?:<strong>)?(Versos da Bíblia para referência:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+### 相关神话语 ##
+#    '<p>(?:<strong>)?(Palavras de Deus relevantes:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+#    '<p>(<strong>)?(Resposta:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+#    '<p>(<strong>)?(Trechos de sermão e comunhão para referência:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+### 每日神話 ##
+#    '<p>(?:<strong>)?(Palavras diárias de Deus)\s*(?:</strong>)?\s*(Trecho.*?)</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+
+#=================韩语KR=================#
+## 脚注 ##
+    '<p>(────+)</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(―＜말씀이.*중에서)':r'<p class="from">\1',
+## 韩语《听神声音 看见神显现》 ##
+#    '<p><strong>(질문\(\d+\).*)</strong></p>':r'<h6>\1</h6>',
+#    '<p>(\(하나님 말씀 전편 발췌\))</p>\n<p><strong>(.*)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+#    '<p><strong>(성경 참고:)</strong></p>':r'<p class="heading-3">\1</p>',
+#    '<p><strong>(관련된 하나님 말씀:)</strong></p>':r'<p class="heading-3">\1</p>',
+#    '<p><strong>(답변:)</strong></p>':r'<p class="heading-3">\1</p>',
+## 转换特殊符号 ##
+#    '&lt;':r'>',
+#    '&gt;':r'<',
+
+#=================克里奥尔语=================#
+## 脚注 ##
+    '<p>(Nòt Anba Paj:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Nòt Anba Paj:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Nòt Anba Paj:)</p>':r'<p class="footnote">\1</p>',
+    '<p>(Nòt anba Paj:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Nòt anba Paj:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Nòt anba Paj:)</p>':r'<p class="footnote">\1</p>',
+
+#=================斯瓦语SW=================#
+## 脚注 ##
+    '<p>(Tanbihi:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Tanbihi:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Tanbihi:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(Kimetoholewa\s[kK]utoka.*)</p>':r'<p class="from">\1</p>',
+    '<p>(kutoka\s(kutoka|katika)\s.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+    '<p>(<strong>)?(Aya za Biblia za Kurejelea:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 相关神话语 ##
+    '<p>(<strong>)?(Maneno Husika ya Mungu:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 参考讲道交通 ##
+#    '<p>(<strong>)?(Madondoo ya Mahubiri na Ushirika kwa ajili ya Marejeo:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 摘选全篇神话语 ##
+#    '<p>(\(Fungu Lililochaguliwa la Neno la Mungu\))</p>\n<p><strong>(.*?)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+## 问题長標題 ##
+#    '<p><strong>(Swali\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(<strong>)?(Jibu:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(Jibu:)(</strong>)?:\s*(</strong>)?\s*':r'<p><strong>\1:</strong> ',
+
+#=================祖鲁语ZU=================#
+## 脚注 ##
+#    '<p>(Imibhalo\syaphansi:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+#    '<p>(Imibhalo\syaphansi:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+#    '<p>(Imibhalo\syaphansi:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+#    '<p>(Kucashunwe embhalweni othi.*)</p>':r'<p class="from">\1</p>',
+#    '<p>(kuvela embhalweni othi.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(<strong>)?(Izikhombo Zamavesi EBhayibheli:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 相关神话语 ##
+#    '<p>(<strong>)?(Amazwi KaNkulunkulu Abalulekile:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 参考讲道交通 ##
+#    '<p>(<strong>)?(Izingcaphuno Zezintshumayelo Nokuhlanganyela Okungabhekiswa Kuzo:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 摘选全篇神话语 ##
+#    '<p>(\(Isiqephu Sezwi LikaNkulunkulu Esikhethiwe\))</p>\n<p><strong>(.*?)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+## 问题長標題 ##
+#    '<p><strong>(Umbuzo\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(<strong>)?(Impendulo:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(Impendulo:)(</strong>)?:\s*(</strong>)?\s*':r'<p><strong>\1:</strong> ',
+
+##=================俄文RU=================#
+## 參考聖經 ##
+    '<p>(<strong>)?(Библейские стихи для справки:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 相關神話語 ##
+    '<p>(<strong>)?(Слова Бога на данную тему:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 摘自引號 ##
+    '<p>(из «)':r'<p class="from">\1',
+## 摘自電影劇本 ##
+#    '<p>(из сценария фильма )':r'<p class="from">\1',
+## 摘自第幾篇 ##
+#    '<p>(из глава )':r'<p class="from">\1',
+## 日期 ##
+#    '<p>(.* \d{4} г.)</p>':r'<p class="date">\1</p>',
+## 腳注 ##
+#    '<p>Примечания:</p>\n<p>(.*)</p>\n<p>(.*)</p>':r'<p class="footnote">Примечания:</p>\n<p class="footnote">\1</p>\n<p class="footnote">\2</p>',
+#    '<p>Примечание:</p>\n<p>(.*)</p>':r'<p class="footnote">Примечание:</p>\n<p class="footnote">\1</p>',
+## 替換俄文a ##
+#    '\[а\]':r'[a]',
+#    '<p class="footnote">а. ':r'<p class="footnote">a. ',
+## 劇本問題標題 ##
+#    '<p>(Вопрос \d: .*)</p>|<h1>(Вопрос \d: .*)</h1>':r'<h6>\1</h6>: ',
+## 答案 ##
+#    '<p><strong>Ответ(</strong>)?:\s*(</strong>)?\s*':r'<p><strong>Ответ:</strong> ',
+
+##=================英文EN=================#
+## 參考聖經 ##
+    '<p><strong>(Bible Verses for Reference:)</strong></p>':r'<p class="heading-3">\1</p>',
+## 相關神話語 ##
+    '<p><strong>(Relevant Words of God:)</strong></p>':r'<p class="heading-3">\1</p>',
+## 摘選全篇神話語, 神話標題 ##
+#    '<p><strong>(.*)</strong></p>\n<p>\(A Selected Chapter of God’s Word\)</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">(A Selected Chapter of God’s Word)</p>',
+## 摘自 ##
+    '<p>(Excerpted from )':r'<p class="from">\1',
+    '<p>(from “)':r'<p class="from">\1',
+## 摘自話在肉身顯現 ##
+#    '<p>(from The Word Appears in the Flesh)</p>':r'<p class="from">\1</p>',
+## 日期 ##
+    '<p>(.* \d{1,2}, \d{4})</p>':r'<p class="date">\1</p>',
+## 腳注 ##
+    '<p>Footnotes:</p>\n<p>(.*)</p>\n<p>(.*)</p>':r'<p class="footnote">Footnotes:</p>\n<p class="footnote">\1</p>\n<p class="footnote">\2</p>',
+    '<p>Footnotes:</p>\n<p>(.*)</p>':r'<p class="footnote">Footnotes:</p>\n<p class="footnote">\1</p>',
+
+#=================希伯來文HE=================#
+## 從右到左 ##
+#    '<body>':r'<body dir="rtl">',
+## 參考聖經 ##
+#    '<p>(<strong>)?(דברי אלוהים רלוונטיים:)(</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相關神話語 ##
+#    '<p>(<strong>)?(קטעים לעיון מתוך דרשות ושיתוף:)(</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘選全篇神話語, 神話標題
+#    '<p>(<strong>)?\(קטעים נבחרים מדברי אלוהים\)(</strong>)?</p>\n<p>(<strong>)?(.*?)(</strong>)?</p>':r'<p class="heading-4">(קטעים נבחרים מדברי אלוהים)</p>\n<h4 class="sigil_not_in_toc">\4</h4>',
+## 摘自 ##
+#    '<p>קטע מתוך ':r'<p class="from">קטע מתוך ',
+## 摘自座談紀要 ##
+#    '<p>קטע משיתופיהם של בכירים</p>':r'<p class="from">קטע משיתופיהם של בכירים</p>',
+## 腳注 ##
+#    '<p>הערות שוליים:</p>\n<p>(.*)</p>\n<p>(.*)</p>':r'<p class="footnote">הערות שוליים:</p>\n<p class="footnote">\1</p>\n<p class="footnote">\2</p>',
+#    '<p>הערות שוליים:</p>\n<p>(.*)</p>':r'<p class="footnote">הערות שוליים:</p>\n<p class="footnote">\1</p>',
+## 每日神話標題 ##
+##    '<p>דבר אלוהים היומי מובאה (.*)</p>':r'<p class="heading-2">דבר אלוהים היומי <span class="excerpt">מובאה \1</span></p>',
+
+#=================中文ZH=================#
+## 主標題刪除加粗代碼 ##
+#    '(<h\d>)<strong>(.*)</strong>(</h\d>)':r'\1\2\3',
+## 主標題上添加空行 ##
+#    '(<h\d>)':r'\n\1',
+## 主標題與內文分行 ##
+#    '(</h\d>)<p>':r'\1\n<p>',
+## 經文出處, 文中摘自 ##
+#    '([（|〔].{1,5}[0-9]{1,2}:[0-9\-、]+[〕|）])|(（摘自《.*?》）)':r'<span class="from-inline">\1\2</span>',
+#    '<p>——摘自':r'<p class="from">——摘自',
+
+#=================中簡TR=================#
+    '<p>(<strong>)?相关神话语\s*(</strong>)?：(</strong>)?</p>':r'<p class="heading-3">相关神话语：</p>',
+    '<p>(<strong>)?参考圣经\s*(</strong>)?：(</strong>)?</p>':r'<p class="heading-3">参考圣经：</p>',
+    '<p>(<strong>)?参考讲道交通\s*(</strong>)?：(</strong>)?</p>':r'<p class="heading-3">参考讲道交通：</p>',
+    '<p>（摘选全篇神话语）</p>\n+[<h\d>|<p>]+(.*?)[</h\d>|</p>]+':r'<p class="heading-4">（摘选全篇神话语）</p>\n<h4 class="sigil_not_in_toc">\1</h4>',
+
+#=================中繁TR=================#
+    '<p>(<strong>)?相關神話語\s*(</strong>)?：(</strong>)?</p>':r'<p class="heading-3">相關神話語：</p>',
+    '<p>(<strong>)?參考聖經\s*(</strong>)?：(</strong>)?</p>':r'<p class="heading-3">參考聖經：</p>',
+    '<p>(<strong>)?參考講道交通\s*(</strong>)?：(</strong>)?</p>':r'<p class="heading-3">參考講道交通：</p>',
+    '<p>（摘選全篇神話語）</p>\n+[<h\d>|<p>]+(.*?)[</h\d>|</p>]+':r'<p class="heading-4">（摘選全篇神話語）</p>\n<h4 class="sigil_not_in_toc">\1</h4>',
+
+#=================尼泊爾文NE=================#
+## 腳注 ##
+    '<p>([कख१]\. .*)</p>\n<p>([कख१]\. .*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>([कख१]\. .*)</p>\n</body>':r'<p class="footnote">\1</p>\n</body>',
+
+#=================泰语TH================#
+## 脚注 ##
+    '<p>(เชิงอรรถ:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(เชิงอรรถ:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(เชิงอรรถ:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+#    '<p>(ตัดตอนมาจาก.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(?:<strong>)?(ข้อพระคัมภีร์สำหรับอ้างอิง)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+#    '<p>(?:<strong>)?(พระวจนะของพระเจ้าที่เกี่ยวข้อง)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+#    '<p>(?:<strong>)?(บทตัดตอนจากคำเทศนาและการสามัคคีธรรมสำหรับการอ้างอิง)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+#    '<p>(\(บทที่คัดสรรจาก พระวจนะของพระเจ้า\))</p>\n<p><strong>(.*?)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+## 问题長標題 ##
+#    '<p><strong>(คำถาม\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(<strong>)?(ตอบ:)(</strong>)?</p>':r'<p class="heading-3">\2</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(ตอบ:)(</strong>)?:\s*(</strong>)?\s*':r'<p><strong>\1:</strong> ',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(พระวจนะของพระเจ้าประจำวัน)\s*(?:</strong>)?\s*(บทตัดตอน.*?)</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+## 日期 ##
+
+#=================印尼语ID================#
+## 脚注 ##
+    '<p>(Catatan kaki:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Catatan kaki:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Catatan kaki:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(Dikutip.*)</p>':r'<p class="from">\1</p>',
+    '<p>(dari.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(?:<strong>)?(参考圣经:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+#    '<p>(?:<strong>)?(相关神话语:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通，相关神话语 ##
+#    '<p><strong>(Firman Tuhan yang Relevan:)</strong></p>':r'<p class="heading-3">\1</p>',
+#    '<p><strong>(Kutipan Khotbah dan Persekutuan untuk Referensi:)</strong></p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+#    '<p>(\(摘选全篇神话语\))</p>\n<p><strong>(.*?)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+#    '<p>(?:<strong>)?(.*)(?:</strong>)?</p>\n<p>(\(Bab Pilihan dari Firman Tuhan\))</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 问题長標題 ##
+#    '<p><strong>(問題\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(答案:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(答案:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(Firman\sTuhan\sHarian:)\s*(?:</strong>)?\s*(Kutipan.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+## 日期 ##
+
+#=================荷兰语NL================#
+## 脚注 ##
+    '<p>(Voetnoten:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Voetnoten:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Voetnoten:)\s*</p>':r'<p class="footnote">\1</p>',
+    '<p>(Voetnoot:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Voetnoot:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Voetnoot:)\s*</p>':r'<p class="footnote">\1</p>',
+# 圣经引用
+#    '<p>(De\sbijbelteksten.*Bijbelgenootschap\.)</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(uit\s.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(?:<strong>)?(Bijbelverzen\ster\sreferentie:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+#    '<p>(?:<strong>)?(Relevante\swoorden\svan\sGod:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+#    '<p>(?:<strong>)?(Gedeelten\suit\spreken\sen\scommunicatie\sals\sreferentie:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+#    '<p>(\(Geselecteerde\spassage\suit\sGods\swoord\))</p>\n<p><strong>(.*?)</strong></p>':r'<p class="heading-4">\1</p>\n<h4 class="sigil_not_in_toc">\2</h4>',
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(\(Geselecteerde\spassage\suit\sGods\swoord\))</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 问题長標題 ##
+#    '<p><strong>(Vraag\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(Antwoord:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(Antwoord:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(Dagelijkse\swoorden\svan\sGod)\s*(?:</strong>)?\s*(Fragment.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+# 圣经引用
+#    '<p>(Sommige\sbijbelteksten.*Bijbelgenootschap\.)</p>':r'<p class="footnote">\1</p>',
+#    '<p>(De\sbijbelteksten.*Bijbelgenootschap\.)</p>':r'<p class="footnote">\1</p>',
+## 日期 ##
+#=================菲语TL================#
+## 脚注 ##
+    '<p>((?:Mga )?Talababa:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>((?:Mga )?Talababa:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>((?:Mga )?Talababa:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自,可尝试限制字符约150以内##
+    '<p>(Hinango mula sa Ang.*)</p>':r'<p class="from">\1</p>',
+    '<p>(mula sa\s“.*)</p>':r'<p class="from">\1</p>',
+    '<p>(mula Mga Plano ng Gawain)</p>':r'<p class="from">\1</p>',
+    '<p>(mula sa Ang Salita ay Nagpapakita sa Katawang-tao)</p>':r'<p class="from">\1</p>',
+    '<p>(mula sa Mga.*)</p>':r'<p class="from">\1</p>',
+    '<p>(mula sa.*){0,150}</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(?:<strong>)?(Mga Talata ng Biblia para Sanggunian:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+#    '<p>(?:<strong>)?(Nauugnay na mga Salita ng Diyos:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+#    '<p>(?:<strong>)?(Sanggunian na mga Sipi ng Sermon at Pagbabahagi:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\(Isang Piniling Kabanata ng Salita ng Diyos\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 问题長標題 ##
+#    '<p>(?:<strong>)?(Tanong\s*\d:.*?)(?:</strong>)?</p>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(Sagot:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 问题解答(與答案同一段) ##
+#    '<p>(?:<strong>)?(Sagot:)(?:</strong>)?':r'<p><strong>\1</strong>',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(每日神話)\s*(?:</strong>)?\s*(选段.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+## 日期 ##
+#=================越南语VI================#
+## 脚注 ##
+    '<p>(Chú thích:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Chú thích:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Chú thích:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(Trích\stừ\s.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(?:<strong>)?(Những\scâu\sKinh\sThánh\stham\skhảo:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+#    '<p>(?:<strong>)?(Lời\sĐức\sChúa\sTrời\scó\sliên\squan:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+#    '<p>(?:<strong>)?(Những\strích\sdẫn\stừ\sbài\sgiảng\svà\sbuổi\sthông\scông\sđể\stham\skhảo:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\(Trích\stuyển\schọn\schương\slời\sĐức\sChúa\sTrời\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 问题長標題 ##
+#    '<p><strong>(Câu hỏi\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+#    '<h3>(Câu hỏi\s*\d:.*)</h3>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(Câu\strả\slời:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(Câu\strả\slời:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(每日神話)\s*(?:</strong>)?\s*(选段.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+## 日期 ##
+#=================希腊语================#
+## 脚注 ##
+    '<p>(Υποσημειώσεις:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Υποσημειώσεις:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Υποσημειώσεις:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+#    '<p>(Απόσπασμα\sαπό.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(?:<strong>)?(Στίχοι\sτης\sΒίβλου\sγια\sπαραπομπή:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+#    '<p>(?:<strong>)?(Σχετικά\sλόγια\sτου\sΘεού:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+#    '<p>(?:<strong>)?(Αποσπάσματα\sαπό\sκήρυγμα\sκαι\sσυναναστροφή\sως\sσημείο\sαναφοράς:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\(Επιλεγμένα\sαποσπάσματα\sαπό\sτον\sλόγο\sτου\sΘεού\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 问题長標題 ##
+#    '<p><strong>(Ερώτηση\s*\d:.*)</strong></p>':r'<h6>\1</h6>',
+#    '<h3>(Ερώτηση\s*\d:.*)</h3>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(Απαντήση:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(Απαντήση:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(每日神話)\s*(?:</strong>)?\s*(选段.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+## 日期 ##
+#=================罗马尼亚RO================#
+## 脚注 ##
+    '<p>(Note de subsol:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Note de subsol:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Note de subsol:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(\(„Cuvântul\sSe\sarată\sîn\strup”\))</p>':r'<p class="from">\1</p>',
+    '<p>(\(.*Se\sarată\sîn\strup\))</p>':r'<p class="from">\1</p>',
+    '<p>(Fragment\sdin.*)</p>':r'<p class="from">\1</p>',
+    '<p>(\(.*în Cuvântările lui Hristos al zilelor de pe urmă\))</p>':r'<p class="from">\1</p>',
+    '<p>(\(„Întrebări\sclasice\sși\srăspunsuri\sdespre\sEvanghelia\sÎmpărăției”\))></p>':r'<p class="from">\1</p>',
+    '<p>(\(Răspunsuri la întrebările din scenetă\))</p>':r'<p class="from">\1</p>',
+    '<p>(\(„Predici și părtășie despre intrarea în viață”\))</p':r'<p class="from">\1</p>',
+    '<p>(\(Părtășia celui de mai sus\))</p':r'<p class="from">\1</p>',
+    '<p>(\(„Rânduielile de lucru”\))</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+    '<p>(?:<strong>)?(Versete\sdin\sBiblie\spentru\sreferințe:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+    '<p>(?:<strong>)?(Cuvinte\srelevante\sale\slui\sDumnezeu:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+    '<p>(?:<strong>)?(Citate\sdin\spredici\sși\spărtășii\sca\sreferință:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\(Un\sarticol\sselectat\sdin\scuvintele\slui\sDumnezeu\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\(Pasaj selectat din cuvintele lui Dumnezeu\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 问题長標題 ##
+    '<p><strong>(Întrebarea\s*\d:\s.*)</strong></p>':r'<h6>\1</h6>',
+#    '<h3>(Întrebare\s*\d:.*)</h3>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+    '<p>(?:<strong>)?(Răspuns:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(Răspuns:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(每日神話)\s*(?:</strong>)?\s*(选段.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+## 日期 ##
+#=================波兰语PL================#
+## 脚注 ##
+    '<p>(Przypisy:)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Przypisy:)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Przypisy:)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+    '<p>(Fragment\s.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(?:<strong>)?(Wersety\sbiblijne\sdo\swykorzystania:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+#    '<p>(?:<strong>)?(Ważne\ssłowa\sBoga:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+#    '<p>(?:<strong>)?(Sermon\sand\sFellowship\sExcerpts\sfor\sReference:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\(Wybrany\sFragment\ssłów\sBoga\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 问题長標題 ##
+#    '<p>(?:</strong>)?(Pytanie\s*\d:.*)(?:</strong>)?</p>':r'<h6>\1</h6>',
+#    '<h3>(Pytanie\s*\d:.*)</h3>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(Odpowiedź:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(Odpowiedź:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(每日神話)\s*(?:</strong>)?\s*(选段.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+## 日期 ##
+#    '<p>(\d+\s.+\s\d\d\d\d\sr\.)</p>':r'<p class="date">\1</p>',
+#=================模板================#
+## 脚注 ##
+#    '<p>(脚注)\s*</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+#    '<p>(脚注)\s*</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+#    '<p>(脚注)\s*</p>':r'<p class="footnote">\1</p>',
+## 摘自 ##
+#    '<p>(摘自話在肉身顯現.*)</p>':r'<p class="from">\1</p>',
+## 参考圣经 ##
+#    '<p>(?:<strong>)?(参考圣经:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 相关神话语 ##
+#    '<p>(?:<strong>)?(相关神话语:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 参考讲道交通 ##
+#    '<p>(?:<strong>)?(参考讲道交通:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 摘选全篇神话语 ##
+#    '<p>(?:<strong>)?(.*?)(?:</strong>)?</p>\n<p>(?:<strong>)?(\(摘选全篇神话语\))(?:</strong>)?</p>':r'<h4 class="sigil_not_in_toc">\1</h4>\n<p class="heading-4">\2</p>',
+## 问题長標題 ##
+#    '<p>(?:</strong>)?(問題\s*\d:.*)(?:</strong>)?</p>':r'<h6>\1</h6>',
+#    '<h3>(問題\s*\d:.*)</h3>':r'<h6>\1</h6>',
+## 问题解答(另起新行) ##
+#    '<p>(?:<strong>)?(答案:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
+## 问题解答(與答案同一段) ##
+#    '<p><strong>(答案:)(</strong>)?:\s*(?:</strong>)?\s*':r'<p><strong>\1:</strong> ',
+## 每日神話 ##
+#    '<p>(?:<strong>)?(每日神話)\s*(?:</strong>)?\s*(选段.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+## 日期 ##}

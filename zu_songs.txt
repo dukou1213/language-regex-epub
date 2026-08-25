@@ -1,0 +1,27 @@
+{
+# 通用规则 #
+    '<body dir="rtl">\n<p class="margin-bottom-1 text-align-right">(.*?)</p>\n<br class="epub_blank" />': r'<body dir="rtl">\n<p class="margin-bottom-1 text-align-right">\1</p>',
+    '<body>\n<p class="margin-bottom-1 text-align-left">(?:<b>)?(.*?)(?:</b>)?</p>': r'<body>\n<h2>\1</h2>',
+    '<p class="margin-bottom-1 text-align-left"></p>\n(<br class="epub_blank" />)':r'\1',
+    '<body>\n<p>(?:<b>)?(.*?)(?:</b>)?</p>': r'<body>\n<h2>\1</h2>',
+    '<body dir="rtl">\n<p class="margin-bottom-1 text-align-right">(?:<b>)?(.*?)(?:</b>)?</p>': r'<body dir="rtl">\n<h2>\1</h2>',
+    '(<br class="epub_blank" />\n)+': r'\1',
+    '<p class="margin-bottom-1 text-align-left"><b>(.{17,})</b></p>': r'<p class="margin-bottom-1 text-align-left">\1</p>',
+    '<p class="margin-bottom-1 text-align-left">((?:Ⅰ|Ⅱ|Ⅲ|Ⅳ|Ⅴ|Refrain|Bridge|Pre-chorus|Prolog|Verse|Chorus|Bait|Outro|Intro|Tag)(\s?\d)?)</p>': r'<p class="margin-bottom-1 text-align-left"><b>\1</b></p>',
+    '(<body>\n<h2>.*</h2>)\n<br class="epub_blank" />': r'\1',
+    '(<body>\n<h2>.*</h2>)\n<p class="margin-bottom-1 text-align-left"></p>\n<br class="epub_blank" />': r'\1',
+    '(<p class="margin-bottom-1 text-align-left">[^<>]*</p>)\n<p class="margin-bottom-1 text-align-left">(<b>(?:Refrain|Pre-chorus|Prolog|Chorus|Verse|Chorus|Bait|Outro|Intro|Tag|Bridge|Ⅰ|Ⅱ|Ⅲ|Ⅳ|Ⅴ)(\s?\d)?</b>)</p>': r'\1\n<br class="epub_blank" />\n<p class="margin-bottom-1 text-align-left">\2</p>',
+    '<br class="epub_blank" />\n</body>':r'</body>',
+    '<p class="margin-bottom-1 text-align-left">([^<>]{1,10})</p>': r'<p class="margin-bottom-1 text-align-left"><b>\1</b></p>',
+    '(<p class="margin-bottom-1 text-align-left">[^<>„”]*</p>)\n(<p class="margin-bottom-1 text-align-left">((?:<b>)(?:\d|Ⅱ|Ⅲ|Ⅰ|II|III|IV|V|VI|VII|VIII|IX)(?:</b>))</p>)': r'\1\n<br class="epub_blank" />\n\2',
+    '<p>(I|Ⅱ|Ⅲ|Ⅰ|II|III|IV|V|VI|VII|VIII|IX|\d)</p>': r'<p class="margin-bottom-1 text-align-center"><b>\1</b></p>',
+# 段落序号后面两个空格 #
+    '(<p>\d+)\s':r'\1&#160;&#160;',
+# 摘自标签 #
+    '(<br class="epub_blank" />\n)<p class="margin-bottom-1 text-align-left">(“Үг.\s.*?</p>)(?:\n<br class="epub_blank" />)?(\n</body>)':r'\1<p class="from">\2\3',
+    '<p class="margin-bottom-1 text-align-left">(Adaptare după Cuvântul, Vol\.\s\d.{0,130})</p>':r'<p class="from">\1</p>',
+    '<br class="epub_blank" />\n<p class="margin-bottom-1 text-align-left">from The':r'<br class="epub_blank" />\n<p class="from">from The',
+## 祖鲁语zu ##
+    '<p>(Kucashunwe embhalweni othi.*)</p>':r'<p class="from">\1</p>',
+    '<p>(kuvela embhalweni othi.*)</p>':r'<p class="from">\1</p>',
+}
