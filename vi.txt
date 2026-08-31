@@ -60,6 +60,11 @@
     '<h3>(Phụ lục\s*\d)\s*</h3>\n<p><strong>\s*(.*?)</strong></p>':r'<h3><span class="text-align-left d-block">\1 </span>\2</h3>',
 ## 文中脚注代码加空行 ##
 #    '(<p class="footnote">[^\n]*?</p>)\n(?!<p\sclass="footnote"|<br|</body|<p>1|<p>a)':r'\1\n<br class="epub_blank" />\n',
+## 卷三选段 ##
+    '<p>(?:<strong>)?(Trích đoạn\s*\d+)(?:</strong>)?</p>':r'<p class="heading-1">\1</p>',
+    '<p>(?:<strong>)?(Trích đoạn\s*\d+)(?:</strong>)?\s(\(Giải đáp câu hỏi của anh chị em\))</p>':r'<p class="heading-1">\1 <span class="excerpt-small">\2</span></p>',
+    '<p>(– Thông Công Của Đức Chúa Trời)</p>':r'<p class="from">\1&#160;&#160;</p>',
+    '<h3>(Thông công về bài thánh ca “Vì yêu”)</h3>\n<p>(\(Thông công cùng nhóm thánh ca\))</p>':r'<h3>\1<br/><span class="subtitle">\2</span></h3>',
 ## 规范span代码 ##
     '(<span class="from-inline">\()([^(]*?)\)\)</span>':r'\1\2)</span>)',
 ## 连续两个空格加代码 ##
