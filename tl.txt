@@ -70,7 +70,8 @@
 ## 问题解答(與答案同一段) ##
 #    '<p>(?:<strong>)?(Sagot:)(?:</strong>)?':r'<p><strong>\1</strong>',
 ## 每日神話 ##
-    '<p>(?:<strong>)?(Araw-araw na mga Salita ng Diyos)\s*(?:</strong>)?\s*(Sipi.*?)(?:</strong>)?</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
+    '<p>(?:<strong>)?(Araw-araw na mga Salita ng Diyos)\s*(?:</strong>)?\s*(Sipi.*?)(?:</strong>)?</p>':r'<p class="heading-1">\1 <span class="excerpt">\2</span></p>',
+    '<p><strong>(.*?\s*)</strong>(\s*\(Piling sipi\)|\s*\(Mga piling sipi\))</p>':r'<p class="heading-2">\1<span class="excerpt-small">\2</span></p>',
 ### 附篇标题 ##
     '<h3>(Apendise\s*\d:)\s*</h3>\n<p><strong>\s*(.*?)</strong></p>':r'<h3><span class="text-align-left d-block">\1 </span>\2</h3>',
 ## 文中脚注代码加空行 ##
