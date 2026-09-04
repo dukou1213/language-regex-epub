@@ -59,7 +59,7 @@
 ### 每日神話 ##
     '<p>(?:<strong>)?(परमेश्वर के दैनिक वचन)\s*(?:</strong>)?\s*(अंश.*?)</p>':r'<p class="heading-2">\1 <span class="excerpt">\2</span></p>',
 ## 卷一附篇标题 ##
-    '<h3>(परिशिष्टe\s*\d:)\s*</h3>\n<p><strong>\s*(.*?)</strong></p>':r'<h3><span class="text-align-left d-block">\1 </span>\2</h3>',
+   '<h3>(परिशिष्ट\s*\d\s*:)\s*</h3>\s*<p><strong>\s*(.*?)</strong></p>': r'<h3><span class="text-align-left d-block">\1 </span>\2</h3>',
 ## 文中脚注代码加空行 ##
 #    '(<p class="footnote">[^\n]*?</p>)\n(?!<p\sclass="footnote"|<br|</body|<p>1|<p>a)':r'\1\n<br class="epub_blank" />\n',
 ## 卷三选段 ##
