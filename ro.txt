@@ -40,7 +40,7 @@
     '<p>(\(„Întrebări\sclasice\sși\srăspunsuri\sdespre\sEvanghelia\sÎmpărăției”\))></p>':r'<p class="from">\1</p>',
     '<p>(\(Răspunsuri la întrebările din scenetă\))</p>':r'<p class="from">\1</p>',
     '<p>(\(„Predici și părtășie despre intrarea în viață”\))</p':r'<p class="from">\1</p>',
-    '<p>(\(Părtășia celui de mai sus\))</p':r'<p class="from">\1</p>',
+    '<p>(\(Părtășia celui de mai sus\))</p>':r'<p class="from">\1</p>',
     '<p>(\(„Rânduielile de lucru”\))</p>':r'<p class="from">\1</p>',
     '<p>(Adaptare după Cuvântul, Vol\.\s\d.{0,110})</p>':r'<p class="from">\1</p>',
     '<p>(– Cuvântul, Vol\.\s\d.{0,300})</p>':r'<p class="from">\1</p>',
