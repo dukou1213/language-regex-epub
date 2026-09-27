@@ -51,7 +51,7 @@
     '((?:</strong>)?[”«]\s+)(?<!from-inline">)(\([^<>]*?w:\sSłowo,\st\.\s[^<>]*?\))(\.)':r'\1<span class="from-inline">\2</span>\3',
     '<p>(?:<strong>)?(Ważne słowa Boga:|Wersety biblijne do wykorzystania:|Przykłady i wyimki z kazań i rozmów wspólnoty:|Odpowiedź:|Powiązane fragmenty filmu|Powiązane świadectwa pochodzące z doświadczenia|Powiązane kazania|Powiązane hymny|Słowa Boga Wszechmogącego dni ostatecznych|Słowa Boże pochodzące z Biblii|Słowa Boże pochodzące z Biblii|Słowa pochodzące z Biblii|Powiązane materiały wideo|Powiązany film)\s*(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
     '([”«]\s+)(?<!from-inline">)(\([^<>]{1,20}?\d+[\d:-]*?\)|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
-    '((?:</strong>)?[”«]\s+)(?<!from-inline">)(\(Słowo,.{0,400}\))(\.)':r'\1<span class="from-inline">\2</span>',
+    '((?:</strong>)?[”«]\s+)(?<!from-inline">)(\(Słowo,(?:[^()<>]|\([^()<>]*\)){0,400}\))(\.)':r'\1<span class="from-inline">\2</span>\3',
 ## 参考圣经 ##
     '<p>(?:<strong>)?(Wersety\sbiblijne\sdo\swykorzystania:)(?:</strong>)?</p>':r'<p class="heading-3">\1</p>',
 ## ź ś 小写改为大写
