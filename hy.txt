@@ -38,16 +38,13 @@
     '<p>(Ծանոթություն:)</p>':r'<p class="footnote">\1</p>',
 ## 单独一行摘自 ##
     '<p>\s*Խոսքը,':r'<p class="from">Խոսքը,',
-#    '<p>(– Folge dem Lamm und singe neue Lieder)</p>':r'<p class="from">\1</p>',
 ## 段落内摘自 ##
     '((?:</strong>)?“?\s)([\(\[]„?Խոսքը,\sհ[^<>]{13,}?[\)\]]+)':r'\1<span class="from-inline">\2</span>',
 #    '((?:</strong>)?[“‘]?\s)(\(„[^<>]{0,150} in (?:„Das Wort erscheint im Fleisch“|„Die Reden des Christus der letzten Tage“|„Folge dem Lamm und singe neue Lieder“)\)+)':r'\1<span class="from-inline">\2</span>',
 #    '((?:</strong>)?[“‘]?\s)(\(„Folge dem Lamm und singe neue Lieder[^<>]*“\)+)':r'\1<span class="from-inline">\2</span>',
-#    '((?:</strong>)?“?\s)(\((?:Nachwort zu Das Wort erscheint im Fleisch|Vorwort zu „Das Wort erscheint im Fleisch“|„Das Wort erscheint im Fleisch“|Vorwort zu Das Wort erscheint im Fleisch|„Die Reden des Christus der letzten Tage“|„Folge dem Lamm und singe neue Lieder“|„170 Prinzipien des Praktizierens der Wahrheit“|„Die Entlarvung von Antichristen“|Gottes Gemeinschaft)\)+)':r'\1<span class="from-inline">\2</span>',
-#    '(</strong>“\s)(\(Offenbarung Kapitel 2 u. 3|Offenbarung 21,23-22,5\))':r'\1<span class="from-inline">\2</span>',
-    # 这个放后面，不然会导致带括号的加粗 („Werk und Eintritt (8)“ in „Das Wort erscheint im Fleisch“)
-    '([“‘](?:</strong>)?\s*)(?<!from-inline">)(\((?!Teil)[^<>]{1,25}?\d+[\d:-]*?\)|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
-    '([“‘]\s(?:</strong>)?\s*)(?<!from-inline">)(\((?!Teil)[^<>]{1,20}?\d+[\d:-]*?\)|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
+# 这个放后面，不然会导致带括号的加粗 („Werk und Eintritt (8)“ in „Das Wort erscheint im Fleisch“)
+    '([“‘»](?:</strong>)?\s*)(?<!from-inline">)(\((?!Teil)[^<>]{1,25}?\d+[\d:-]*?\)|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
+    '([“‘»]\s(?:</strong>)?\s*)(?<!from-inline">)(\((?!Teil)[^<>]{1,20}?\d+[\d:-]*?\)|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
 ### 摘自《摘自话在肉身显现》前言、参考人的交通 ##
 #    '<p>(aus\sdem\s.*)</p>':r'<p class="from">\1</p>',
 ### 圣经中的话 ##
