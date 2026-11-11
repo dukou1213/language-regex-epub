@@ -29,12 +29,12 @@
     '<sup>\s+</sup>':r' ',
 #=================克里奥尔语=================#
 ## 脚注 ##
-    '<p>(Nòt Anba Paj:|Nòt Anba Paj:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
-    '<p>(Nòt Anba Paj:|Nòt Anba Paj:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
-    '<p>(Nòt Anba Paj:|Nòt Anba Paj:)</p>':r'<p class="footnote">\1</p>',
-    '<p>(Nòt Anba Paj:|Nòt Anba Paj:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
-    '<p>(Nòt Anba Paj:|Nòt Anba Paj:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
-    '<p>(Nòt Anba Paj:|Nòt Anba Paj:)</p>':r'<p class="footnote">\1</p>',
+    '<p>(Nòt Anba Paj:|Nòt anba Paj:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Nòt Anba Paj:|Nòt anba Paj:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Nòt Anba Paj:|Nòt anba Paj:)</p>':r'<p class="footnote">\1</p>',
+    '<p>(Nòt Anba Paj:|Nòt anba Paj:)</p>\n<p>(.*)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n<p class="footnote">\3</p>\n</body>',
+    '<p>(Nòt Anba Paj:|Nòt anba Paj:)</p>\n<p>(.*)</p>\n</body>':r'<p class="footnote">\1</p>\n<p class="footnote">\2</p>\n</body>',
+    '<p>(Nòt Anba Paj:|Nòt anba Paj:)</p>':r'<p class="footnote">\1</p>',
 ## 段落内摘自 ##
     '(”\s+)(?<!from-inline">)(\([^<>]{1,20}?\d+[\d:-]*?\)+|\[[^<>]{1,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
 #    '((?:</strong>)?”\s+)(?<!from-inline">)(\((?:Ang Salita, Vol|Sundan ang Cordero at Kumanta ng mga Bagong Awitin,)[^<>]*?\)\)?)':r'\1<span class="from-inline">\2</span>',
