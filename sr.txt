@@ -41,7 +41,7 @@
     '<p>(\(„Reč“,\s\d\..*“\)\.)</p>':r'<p class="from">\1</p>',
     '<p>(–\s„Reč“,\s\d\..*“)</p>':r'<p class="from">\1</p>',
 ## 段落内摘自 ##
-    '([”“’]\s+)(?<!from-inline">)(\([^<>]{0,20}?\d+[\d:-]*\d*?\)|\[[^<>]{0,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
+    '([”“’]\s+(?:</strong>)?)(?<!from-inline">)(\([^<>]{0,20}?\d+[\d:-]*\d*?\)|\[[^<>]{0,20}?\d+[\d:-]*?\])':r'\1<span class="from-inline">\2</span>',
     '((?:</strong>)?[’”“]\s)(\(„Reč[”“],[^<>]*?\)+)(\.)':r'\1<span class="from-inline">\2</span>\3',
     '([”“’]\s+)(?<!from-inline">)(\(Sto sedamdeset načela primene istine\)|\(„Sledi Jagnje i pevaj nove pesme“\))(\.)':r'\1<span class="from-inline">\2</span>\3',
 ## 每日神話 ##
